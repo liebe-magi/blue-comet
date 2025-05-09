@@ -1,5 +1,5 @@
 /**
- * コメント関連のAPI操作モジュール
+ * API operations module for comment-related functions
  */
 import { AppBskyFeedDefs } from '@atproto/api';
 import { CommentInfo } from '../types';
@@ -7,11 +7,11 @@ import { logger } from '../utils';
 import { blueskyAgent } from './agent';
 
 /**
- * 記事へのコメントを投稿する
- * @param articleUri 記事投稿のURI
- * @param articleCid 記事投稿のCID
- * @param commentText コメントのテキスト
- * @returns 投稿結果
+ * Post a comment to an article
+ * @param articleUri Article post URI
+ * @param articleCid Article post CID
+ * @param commentText Comment text
+ * @returns Posting result
  */
 export const postComment = async (
   articleUri: string,
@@ -21,10 +21,10 @@ export const postComment = async (
   const agent = blueskyAgent.getAgent();
 
   if (!blueskyAgent.isSessionValid()) {
-    throw new Error('認証されていません。ログインしてください。');
+    throw new Error('Not authenticated. Please login.');
   }
 
-  // 記事投稿への返信としてコメントを投稿
+  // Post the comment as a reply to the article post
   const response = await agent.post({
     text: commentText,
     reply: {
@@ -37,7 +37,7 @@ export const postComment = async (
         cid: articleCid,
       },
     },
-    langs: ['ja'],
+    langs: ['en'],
     createdAt: new Date().toISOString(),
   });
 
@@ -48,26 +48,26 @@ export const postComment = async (
 };
 
 /**
- * 記事に対するコメントを取得する
- * @param articleUri 記事投稿のURI
- * @returns コメント一覧
+ * Get comments for an article
+ * @param articleUri Article post URI
+ * @returns List of comments
  */
 export const getComments = async (articleUri: string): Promise<CommentInfo[]> => {
   const agent = blueskyAgent.getAgent();
 
   try {
-    // 投稿のスレッドを取得（返信を含む）
+    // Get the thread of the post (including replies)
     const threadResponse = await agent.getPostThread({
       uri: articleUri,
-      depth: 1, // 直接の返信のみを取得
+      depth: 1, // Only get direct replies
     });
 
-    // スレッドの種類をチェック（ThreadViewPostかどうか）
+    // Check the thread type (whether it's ThreadViewPost)
     if (AppBskyFeedDefs.isThreadViewPost(threadResponse.data.thread)) {
-      // ThreadViewPostであれば返信を取得
+      // Get replies if it's ThreadViewPost
       const replies = threadResponse.data.thread.replies || [];
 
-      // コメント情報に変換
+      // Convert to comment information
       const comments = replies
         .filter(reply => AppBskyFeedDefs.isThreadViewPost(reply))
         .map(reply => {
@@ -92,10 +92,10 @@ export const getComments = async (articleUri: string): Promise<CommentInfo[]> =>
       return comments;
     }
 
-    // ThreadViewPost以外の場合は空の配列を返す
+    // Return an empty array if it's not ThreadViewPost
     return [];
   } catch (error) {
-    logger.error('コメントの取得中にエラーが発生しました:', error);
+    logger.error('An error occurred while retrieving comments:', error);
     return [];
   }
 };

@@ -1,23 +1,23 @@
 /**
- * 記事投稿を管理するReact Hook
+ * React Hook for managing article posts
  */
 import { useCallback, useState } from 'react';
 import { createArticlePost, findArticlePost } from '../api/article';
 import { ArticleInfo, ArticlePostResult } from '../types';
 
 /**
- * 記事参照用投稿の作成と管理を行うカスタムフック
- * @returns 記事投稿関連の状態と関数
+ * Custom hook for creating and managing article reference posts
+ * @returns States and functions related to article posting
  */
 export const useArticlePost = () => {
-  // 投稿処理の状態を管理
+  // Manage post processing state
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | undefined>();
   const [articlePostResult, setArticlePostResult] = useState<ArticlePostResult | null>(null);
 
   /**
-   * 記事参照用の投稿を作成する
-   * @param articleInfo 記事情報
+   * Create a reference post for an article
+   * @param articleInfo Article information
    */
   const postArticleReference = useCallback(async (articleInfo: ArticleInfo) => {
     setLoading(true);
@@ -30,7 +30,7 @@ export const useArticlePost = () => {
       return result;
     } catch (error) {
       const errorMessage =
-        error instanceof Error ? error.message : '記事投稿中にエラーが発生しました';
+        error instanceof Error ? error.message : 'An error occurred while posting the article';
       setError(errorMessage);
       setLoading(false);
       return null;
@@ -38,8 +38,8 @@ export const useArticlePost = () => {
   }, []);
 
   /**
-   * 記事IDから関連する投稿を検索する
-   * @param articleId 記事ID
+   * Find related posts for an article ID
+   * @param articleId Article ID
    */
   const findArticleReference = useCallback(async (articleId: string) => {
     setLoading(true);
@@ -56,13 +56,15 @@ export const useArticlePost = () => {
         setLoading(false);
         return articleResult;
       } else {
-        setError('記事の投稿が見つかりませんでした');
+        setError('Article post not found');
         setLoading(false);
         return null;
       }
     } catch (error) {
       const errorMessage =
-        error instanceof Error ? error.message : '記事検索中にエラーが発生しました';
+        error instanceof Error
+          ? error.message
+          : 'An error occurred while searching for the article';
       setError(errorMessage);
       setLoading(false);
       return null;
@@ -70,7 +72,7 @@ export const useArticlePost = () => {
   }, []);
 
   /**
-   * 状態をリセットする
+   * Reset state
    */
   const reset = useCallback(() => {
     setArticlePostResult(null);

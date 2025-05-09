@@ -1,38 +1,38 @@
 /**
- * 記事関連のAPI操作モジュール
+ * API operations module for article-related functions
  */
 import { ArticleInfo, ArticlePostResult } from '../types';
 import { logger } from '../utils';
 import { blueskyAgent } from './agent';
 
 /**
- * 記事参照用の投稿を作成する
- * @param articleInfo 記事情報
- * @returns 投稿結果
+ * Create a reference post for an article
+ * @param articleInfo Article information
+ * @returns Posting result
  */
 export const createArticlePost = async (articleInfo: ArticleInfo): Promise<ArticlePostResult> => {
   const agent = blueskyAgent.getAgent();
 
   if (!blueskyAgent.isSessionValid()) {
-    throw new Error('認証されていません。ログインしてください。');
+    throw new Error('Not authenticated. Please login.');
   }
 
-  // 記事を特定するためのテキスト作成
-  let postText = `記事タイトル: ${articleInfo.title}\n記事ID: ${articleInfo.articleId}`;
+  // Create text to identify the article
+  let postText = `Article Title: ${articleInfo.title}\nArticle ID: ${articleInfo.articleId}`;
 
-  // URLがある場合は追加
+  // Add URL if available
   if (articleInfo.url) {
     postText += `\nURL: ${articleInfo.url}`;
   }
 
-  // 記事参照用の投稿を作成
+  // Create a reference post for the article
   const response = await agent.post({
     text: postText,
-    langs: ['ja'],
+    langs: ['en'],
     createdAt: new Date().toISOString(),
   });
 
-  // 投稿のURIとCIDを記録
+  // Record the URI and CID of the post
   return {
     uri: response.uri,
     cid: response.cid,
@@ -41,19 +41,19 @@ export const createArticlePost = async (articleInfo: ArticleInfo): Promise<Artic
 };
 
 /**
- * 記事IDから関連する投稿を検索する
- * @param articleId 記事ID
- * @returns 見つかった投稿のURIとCID
+ * Find related posts by article ID
+ * @param articleId Article ID
+ * @returns URI and CID of the found post
  */
 export const findArticlePost = async (
   articleId: string
 ): Promise<{ uri: string; cid: string } | null> => {
   const agent = blueskyAgent.getAgent();
 
-  // 記事IDを含む投稿を検索
-  // Note: Blueskyの検索機能は限定的なので、実際の実装ではより複雑な検索ロジックが必要かもしれません
+  // Search for posts containing the article ID
+  // Note: Bluesky's search capability is limited, so a more complex search logic might be needed in actual implementation
   try {
-    const searchQuery = `記事ID: ${articleId}`;
+    const searchQuery = `Article ID: ${articleId}`;
     const searchResult = await agent.app.bsky.feed.searchPosts({ q: searchQuery, limit: 1 });
 
     if (searchResult.data.posts.length > 0) {
@@ -66,7 +66,7 @@ export const findArticlePost = async (
 
     return null;
   } catch (error) {
-    logger.error('記事投稿の検索中にエラーが発生しました:', error);
+    logger.error('An error occurred while searching for article posts:', error);
     return null;
   }
 };

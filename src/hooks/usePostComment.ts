@@ -1,27 +1,27 @@
 /**
- * コメント投稿機能を管理するReact Hook
+ * React Hook for managing comment posting functionality
  */
 import { useCallback, useState } from 'react';
 import { postComment } from '../api/comment';
 import { CommentInfo, PostCommentState } from '../types';
 
 /**
- * 記事にコメントを投稿するためのカスタムフック
- * @returns コメント投稿関連の状態と関数
+ * Custom hook for posting comments to an article
+ * @returns Comment posting related states and functions
  */
 export const usePostComment = () => {
-  // コメント投稿の状態を管理
+  // Manage comment posting state
   const [state, setState] = useState<PostCommentState>({
     posting: false,
     success: false,
   });
 
   /**
-   * コメントを投稿する
-   * @param articleUri 記事投稿のURI
-   * @param articleCid 記事投稿のCID
-   * @param commentText コメントのテキスト
-   * @returns 投稿結果
+   * Post a comment
+   * @param articleUri Article post URI
+   * @param articleCid Article post CID
+   * @param commentText Comment text
+   * @returns Posting result
    */
   const submitComment = useCallback(
     async (
@@ -34,17 +34,17 @@ export const usePostComment = () => {
       try {
         const result = await postComment(articleUri, articleCid, commentText);
 
-        // コメント情報を作成（Blueskyから完全な情報を取得するわけではないので一部推測）
+        // Create comment info (some parts are estimated as we don't retrieve the full info from Bluesky)
         const now = new Date().toISOString();
         const commentInfo: CommentInfo = {
           uri: result.uri,
           cid: result.cid,
           text: commentText,
           author: {
-            // 注: ここでのDIDとハンドルは実際にはセッションから取得する必要がある
-            // 簡略化のため、ここでは投稿が成功した時点でログイン済みと仮定
-            did: 'logged-in-did', // 実際の実装では動的に取得
-            handle: 'logged-in-handle', // 実際の実装では動的に取得
+            // Note: DID and handle should actually be retrieved from the session
+            // For simplicity, we assume the user is logged in when the post succeeds
+            did: 'logged-in-did', // Should be dynamically retrieved in actual implementation
+            handle: 'logged-in-handle', // Should be dynamically retrieved in actual implementation
           },
           createdAt: now,
           indexedAt: now,
@@ -56,7 +56,8 @@ export const usePostComment = () => {
         setState({
           posting: false,
           success: false,
-          error: error instanceof Error ? error.message : 'コメント投稿中にエラーが発生しました',
+          error:
+            error instanceof Error ? error.message : 'An error occurred while posting the comment',
         });
         return null;
       }
@@ -65,7 +66,7 @@ export const usePostComment = () => {
   );
 
   /**
-   * 状態をリセットする
+   * Reset state
    */
   const reset = useCallback(() => {
     setState({ posting: false, success: false });

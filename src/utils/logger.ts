@@ -1,10 +1,10 @@
 /**
- * ロガーユーティリティ
- * コンソール出力をラップし、環境に応じた出力制御を可能にするシンプルなロガー
+ * Logger utility
+ * A simple logger that wraps console output and allows for output control based on environment
  */
 
 /**
- * ログレベルの定義
+ * Definition of log levels
  */
 export enum LogLevel {
   ERROR = 'error',
@@ -14,43 +14,43 @@ export enum LogLevel {
 }
 
 /**
- * 現在の環境がプロダクション環境かどうかを判定
- * 将来的には環境変数などを使って設定することも可能
+ * Determine if the current environment is a production environment
+ * In the future, this could be configured using environment variables
  */
 const isProduction = (): boolean => {
-  // processオブジェクトがundefinedの場合があるため、より安全な判定方法を使用
+  // Using a safer detection method as the process object might be undefined
   return typeof window !== 'undefined' && window.location?.hostname !== 'localhost';
 };
 
 /**
- * エラーログを出力する関数
- * @param message ログメッセージ
- * @param optionalParams 追加パラメータ
+ * Function to output error logs
+ * @param message Log message
+ * @param optionalParams Additional parameters
  */
 export const logError = (message: string, ...optionalParams: unknown[]): void => {
-  // プロダクション環境でもエラーは出力する
+  // Output errors even in production environment
   // eslint-disable-next-line no-console
   console.error(`[ERROR] ${message}`, ...optionalParams);
 };
 
 /**
- * 警告ログを出力する関数
- * @param message ログメッセージ
- * @param optionalParams 追加パラメータ
+ * Function to output warning logs
+ * @param message Log message
+ * @param optionalParams Additional parameters
  */
 export const logWarn = (message: string, ...optionalParams: unknown[]): void => {
-  // プロダクション環境でも警告は出力する
+  // Output warnings even in production environment
   // eslint-disable-next-line no-console
   console.warn(`[WARN] ${message}`, ...optionalParams);
 };
 
 /**
- * 情報ログを出力する関数
- * @param message ログメッセージ
- * @param optionalParams 追加パラメータ
+ * Function to output info logs
+ * @param message Log message
+ * @param optionalParams Additional parameters
  */
 export const logInfo = (message: string, ...optionalParams: unknown[]): void => {
-  // プロダクション環境では情報ログは出力しない
+  // Don't output info logs in production environment
   if (!isProduction()) {
     // eslint-disable-next-line no-console
     console.info(`[INFO] ${message}`, ...optionalParams);
@@ -58,12 +58,12 @@ export const logInfo = (message: string, ...optionalParams: unknown[]): void => 
 };
 
 /**
- * デバッグログを出力する関数
- * @param message ログメッセージ
- * @param optionalParams 追加パラメータ
+ * Function to output debug logs
+ * @param message Log message
+ * @param optionalParams Additional parameters
  */
 export const logDebug = (message: string, ...optionalParams: unknown[]): void => {
-  // プロダクション環境ではデバッグログは出力しない
+  // Don't output debug logs in production environment
   if (!isProduction()) {
     // eslint-disable-next-line no-console
     console.debug(`[DEBUG] ${message}`, ...optionalParams);
@@ -71,7 +71,7 @@ export const logDebug = (message: string, ...optionalParams: unknown[]): void =>
 };
 
 /**
- * ロガー関数をまとめたオブジェクト
+ * Object that combines logger functions
  */
 export const logger = {
   error: logError,

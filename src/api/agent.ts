@@ -1,14 +1,14 @@
 /**
- * BskyAgentの初期化・管理を行うモジュール
+ * Module for initializing and managing BskyAgent
  */
 import { BskyAgent } from '@atproto/api';
 import { BlueskyAuthCredentials } from '../types';
 
-// BlueskyのデフォルトサービスURL
+// Default service URL for Bluesky
 const DEFAULT_SERVICE = 'https://bsky.social';
 
 /**
- * BlueskyエージェントとAPIを管理するクラス
+ * Class for managing Bluesky agent and API
  */
 export class BlueskyAgentManager {
   private static instance: BlueskyAgentManager;
@@ -16,17 +16,17 @@ export class BlueskyAgentManager {
   private isAuthenticated: boolean = false;
 
   /**
-   * コンストラクタ - サービスURLを指定してBskyAgentを初期化
-   * @param service サービスURL（省略時はデフォルト値）
+   * Constructor - Initialize BskyAgent with a service URL
+   * @param service Service URL (default value if omitted)
    */
   private constructor(service: string = DEFAULT_SERVICE) {
     this.agent = new BskyAgent({ service });
   }
 
   /**
-   * シングルトンインスタンスの取得
-   * @param service サービスURL（初回のみ有効）
-   * @returns BlueskyAgentManagerのインスタンス
+   * Get the singleton instance
+   * @param service Service URL (only effective on first call)
+   * @returns Instance of BlueskyAgentManager
    */
   public static getInstance(service?: string): BlueskyAgentManager {
     if (!BlueskyAgentManager.instance) {
@@ -36,9 +36,9 @@ export class BlueskyAgentManager {
   }
 
   /**
-   * Blueskyにログイン
-   * @param credentials 認証情報
-   * @returns 認証結果
+   * Login to Bluesky
+   * @param credentials Authentication information
+   * @returns Authentication result
    */
   public async login(credentials: BlueskyAuthCredentials) {
     try {
@@ -59,32 +59,32 @@ export class BlueskyAgentManager {
   }
 
   /**
-   * セッションの状態を確認
-   * @returns セッションが有効な場合はtrue
+   * Check session state
+   * @returns true if the session is valid
    */
   public isSessionValid(): boolean {
     return this.isAuthenticated && !!this.agent.session;
   }
 
   /**
-   * サインアウト
+   * Sign out
    */
   public logout(): void {
-    // sessionプロパティは読み取り専用なので、新しいエージェントを作成して
-    // 認証状態をリセットする
+    // Since the session property is read-only, create a new agent
+    // to reset the authentication state
     const service = this.agent.service.toString();
     this.agent = new BskyAgent({ service });
     this.isAuthenticated = false;
   }
 
   /**
-   * BskyAgentインスタンスの取得
-   * @returns BskyAgentインスタンス
+   * Get the BskyAgent instance
+   * @returns BskyAgent instance
    */
   public getAgent(): BskyAgent {
     return this.agent;
   }
 }
 
-// エクスポート用のシングルトンインスタンス
+// Singleton instance for export
 export const blueskyAgent = BlueskyAgentManager.getInstance();

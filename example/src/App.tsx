@@ -8,18 +8,18 @@ import {
 } from 'blue-comet';
 import React, { useState } from 'react';
 
-// サンプル記事情報
+// Sample article information
 const sampleArticle: ArticleInfo = {
   articleId: 'sample-article-001',
-  title: 'Blue Comet サンプル記事',
+  title: 'Blue Comet Sample Article',
   url: 'https://example.com/sample-article-001',
 };
 
 const App: React.FC = () => {
-  // 認証状態
+  // Authentication state
   const { authState, login, logout } = useBlueskyAuth();
 
-  // 記事投稿状態
+  // Article post state
   const {
     articlePostResult,
     postArticleReference,
@@ -28,7 +28,7 @@ const App: React.FC = () => {
     error: articleError,
   } = useArticlePost();
 
-  // コメント一覧
+  // Comment list
   const {
     comments,
     loading: commentsLoading,
@@ -37,35 +37,35 @@ const App: React.FC = () => {
     addComment,
   } = useComments(articlePostResult?.uri);
 
-  // コメント投稿
+  // Comment posting
   const { posting, success, error: postError, submitComment } = usePostComment();
 
-  // 認証情報フォーム用の状態
+  // State for authentication form
   const [credentials, setCredentials] = useState<BlueskyAuthCredentials>({
     identifier: '',
     password: '',
   });
 
-  // コメント投稿フォーム用の状態
+  // State for comment submission form
   const [commentText, setCommentText] = useState('');
 
-  // 認証フォームの送信ハンドラー
+  // Authentication form submission handler
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     await login(credentials);
   };
 
-  // 記事参照用投稿の作成ハンドラー
+  // Handler for creating article reference post
   const handleCreateArticlePost = async () => {
     await postArticleReference(sampleArticle);
   };
 
-  // 記事参照用投稿の検索ハンドラー
+  // Handler for searching article reference post
   const handleFindArticlePost = async () => {
     await findArticleReference(sampleArticle.articleId);
   };
 
-  // コメント投稿ハンドラー
+  // Comment submission handler
   const handlePostComment = async (e: React.FormEvent) => {
     e.preventDefault();
 
@@ -79,28 +79,28 @@ const App: React.FC = () => {
     }
   };
 
-  // 日付のフォーマット
+  // Date formatting
   const formatDate = (dateString: string) => {
     const date = new Date(dateString);
-    return date.toLocaleString('ja-JP');
+    return date.toLocaleString('en-US');
   };
 
   return (
     <div className="container">
-      <h1>Blue Comet サンプルアプリ</h1>
+      <h1>Blue Comet Sample App</h1>
 
-      {/* 認証セクション */}
+      {/* Authentication Section */}
       <div className="card">
-        <h2>Blueskyアカウント認証</h2>
+        <h2>Bluesky Account Authentication</h2>
         {authState.isAuthenticated ? (
           <div>
-            <p>ログイン済み: {authState.handle}</p>
-            <button onClick={logout}>ログアウト</button>
+            <p>Logged in as: {authState.handle}</p>
+            <button onClick={logout}>Logout</button>
           </div>
         ) : (
           <form onSubmit={handleLogin}>
             <div className="form-group">
-              <label htmlFor="identifier">ユーザー名:</label>
+              <label htmlFor="identifier">Username:</label>
               <input
                 id="identifier"
                 type="text"
@@ -111,29 +111,29 @@ const App: React.FC = () => {
               />
             </div>
             <div className="form-group">
-              <label htmlFor="password">パスワード:</label>
+              <label htmlFor="password">Password:</label>
               <input
                 id="password"
                 type="password"
                 value={credentials.password}
                 onChange={e => setCredentials({ ...credentials, password: e.target.value })}
-                placeholder="アプリパスワードを推奨"
+                placeholder="Recommended app password"
                 required
               />
             </div>
             <button type="submit" disabled={authState.loading}>
-              {authState.loading ? 'ログイン中...' : 'ログイン'}
+              {authState.loading ? 'Logging in...' : 'Login'}
             </button>
             {authState.error && <p className="error">{authState.error}</p>}
           </form>
         )}
       </div>
 
-      {/* 記事投稿セクション */}
+      {/* Article Post Section */}
       <div className="card">
-        <h2>記事参照用投稿</h2>
-        <p>記事ID: {sampleArticle.articleId}</p>
-        <p>タイトル: {sampleArticle.title}</p>
+        <h2>Article Reference Post</h2>
+        <p>Article ID: {sampleArticle.articleId}</p>
+        <p>Title: {sampleArticle.title}</p>
         <p>URL: {sampleArticle.url}</p>
 
         <div style={{ display: 'flex', gap: '1rem', marginTop: '1rem' }}>
@@ -141,37 +141,37 @@ const App: React.FC = () => {
             onClick={handleCreateArticlePost}
             disabled={!authState.isAuthenticated || articleLoading}
           >
-            記事参照用投稿を作成
+            Create Article Reference Post
           </button>
           <button onClick={handleFindArticlePost} disabled={articleLoading}>
-            記事参照用投稿を検索
+            Search Article Reference Post
           </button>
         </div>
 
-        {articleLoading && <p>処理中...</p>}
+        {articleLoading && <p>Loading...</p>}
         {articleError && <p className="error">{articleError}</p>}
 
         {articlePostResult && (
           <div style={{ marginTop: '1rem' }}>
-            <p className="success">記事参照用投稿が見つかりました:</p>
+            <p className="success">Article Reference Post found:</p>
             <p>URI: {articlePostResult.uri}</p>
             <p>CID: {articlePostResult.cid}</p>
           </div>
         )}
       </div>
 
-      {/* コメント投稿セクション */}
+      {/* Comment Submission Section */}
       {articlePostResult && (
         <div className="card">
-          <h2>コメント投稿</h2>
+          <h2>Comment Submission</h2>
           <form onSubmit={handlePostComment}>
             <div className="form-group">
-              <label htmlFor="comment">コメント:</label>
+              <label htmlFor="comment">Comment:</label>
               <textarea
                 id="comment"
                 value={commentText}
                 onChange={e => setCommentText(e.target.value)}
-                placeholder="コメントを入力してください"
+                placeholder="Please enter your comment"
                 rows={3}
                 required
               />
@@ -180,27 +180,27 @@ const App: React.FC = () => {
               type="submit"
               disabled={!authState.isAuthenticated || posting || !commentText.trim()}
             >
-              {posting ? '投稿中...' : 'コメントを投稿'}
+              {posting ? 'Loading...' : 'Submit Comment'}
             </button>
             {postError && <p className="error">{postError}</p>}
-            {success && <p className="success">コメントが投稿されました！</p>}
+            {success && <p className="success">Comment submitted successfully!</p>}
           </form>
         </div>
       )}
 
-      {/* コメント一覧セクション */}
+      {/* Comments Section */}
       {articlePostResult && (
         <div className="card">
-          <h2>コメント一覧</h2>
+          <h2>Comments</h2>
           <button onClick={() => fetchComments()} disabled={commentsLoading}>
-            {commentsLoading ? '読み込み中...' : 'コメントを更新'}
+            {commentsLoading ? 'Loading...' : 'Update Comments'}
           </button>
 
           {commentsError && <p className="error">{commentsError}</p>}
 
           <div className="comment-list" style={{ marginTop: '1rem' }}>
             {comments.length === 0 ? (
-              <p>コメントはまだありません。</p>
+              <p>No comments yet.</p>
             ) : (
               comments.map(comment => (
                 <div key={comment.cid} className="comment">
