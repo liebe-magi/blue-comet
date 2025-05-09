@@ -78,3 +78,5 @@ example/node_modules/
 temp/
 *.tsbuildinfo
 .eslintcache
+
+.github/copilot-instructions.md
