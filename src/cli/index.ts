@@ -1,3 +1,13 @@
-// Programmatic CLI surface. Phase 3 fills this in.
-// Placeholder export to keep the entry compilable in Phase 1.
-export const __PHASE_1_PLACEHOLDER__ = true;
+// Programmatic surface of the bluecomet CLI.
+// Useful for scripts that want to skip the argv parser.
+
+export { runLogin } from './commands/login';
+export { runLogout } from './commands/logout';
+export { runPost } from './commands/post';
+export { runLink } from './commands/link';
+
+export type { LoginInput } from './commands/login';
+export type { PostOptions } from './commands/post';
+export type { LinkOptions, LinkReport, LinkReportEntry } from './commands/link';
+export type { BlueCometConfig } from './config';
+export { loadConfig, loadConfigFromExplicitPath } from './config';
