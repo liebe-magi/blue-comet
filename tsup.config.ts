@@ -1,6 +1,21 @@
 import { defineConfig } from 'tsup';
-import { copyFileSync, chmodSync, existsSync } from 'node:fs';
+import {
+  chmodSync,
+  copyFileSync,
+  existsSync,
+  readFileSync,
+  writeFileSync,
+} from 'node:fs';
 import { resolve } from 'node:path';
+
+const USE_CLIENT_DIRECTIVE = "'use client';\n";
+
+function prependUseClient(file: string): void {
+  if (!existsSync(file)) return;
+  const content = readFileSync(file, 'utf8');
+  if (content.startsWith("'use client'") || content.startsWith('"use client"')) return;
+  writeFileSync(file, USE_CLIENT_DIRECTIVE + content);
+}
 
 export default defineConfig([
   {
@@ -12,13 +27,18 @@ export default defineConfig([
     clean: true,
     target: 'es2020',
     external: ['react', 'react-dom', '@atproto/api'],
-    banner: { js: "'use client';" },
     treeshake: true,
     onSuccess: async () => {
-      const src = resolve('src/styles.css');
-      const dest = resolve('dist/styles.css');
-      if (existsSync(src)) {
-        copyFileSync(src, dest);
+      // Mark the bundled React entry as a Client Component for Next.js / RSC
+      // bundlers. esbuild strips both source directives and the `banner`
+      // option's contents during bundling, so prepend it directly.
+      prependUseClient(resolve('dist/index.js'));
+      prependUseClient(resolve('dist/index.cjs'));
+
+      const cssSrc = resolve('src/styles.css');
+      const cssDest = resolve('dist/styles.css');
+      if (existsSync(cssSrc)) {
+        copyFileSync(cssSrc, cssDest);
       }
     },
   },

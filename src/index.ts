@@ -1,6 +1,22 @@
-// Public re-exports for the React entry point.
-// Phase 1 only ships the core layer; the React layer lands in Phase 2.
+// Components
+export { BlueCometComments } from './react/BlueCometComments';
+export { ReplyOnBluesky } from './react/ReplyOnBluesky';
+export { EmptyState } from './react/EmptyState';
+export { SkeletonState } from './react/SkeletonState';
+export { CommentList } from './react/CommentList';
+export { CommentItem } from './react/CommentItem';
 
+export type { ReplyOnBlueskyProps } from './react/ReplyOnBluesky';
+export type { EmptyStateProps } from './react/EmptyState';
+export type { SkeletonStateProps } from './react/SkeletonState';
+export type { CommentListProps } from './react/CommentList';
+export type { CommentItemProps } from './react/CommentItem';
+
+// Hooks
+export { useThread } from './react/hooks/useThread';
+export { useCommentCount } from './react/hooks/useCommentCount';
+
+// URI helpers
 export {
   parseAtUri,
   parseBlueskyWebUrl,
@@ -11,9 +27,11 @@ export {
 
 export type { AtUriParts, BlueskyWebUrlParts, ResolveWebUrlOptions } from './core/uri';
 
+// Direct fetchers (for SSR / SSG / custom rendering)
 export { fetchThread, fetchThreadCount } from './core/appview';
 export type { FetchThreadOptions } from './core/appview';
 
+// Types
 export type {
   Author,
   Comment,
@@ -26,4 +44,5 @@ export type {
   BlueCometCommentsProps,
 } from './core/types';
 
+// Errors
 export { BlueCometError, NotFoundError, NetworkError } from './core/errors';
