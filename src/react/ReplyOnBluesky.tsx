@@ -2,6 +2,7 @@
 
 import type { ReactNode } from 'react';
 import { buildReplyComposerUrl } from '../core/uri';
+import { ReplyIcon } from './icons';
 
 export interface ReplyOnBlueskyProps {
   postUri: string;
@@ -25,7 +26,12 @@ export function ReplyOnBluesky({
 
   return (
     <a href={href} target="_blank" rel="noopener noreferrer" className={className}>
-      {children ?? 'Reply on Bluesky'}
+      {children ?? (
+        <>
+          <ReplyIcon className="bluecomet-icon" />
+          <span>Reply on Bluesky</span>
+        </>
+      )}
     </a>
   );
 }

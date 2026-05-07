@@ -56,6 +56,9 @@ interface ApiPostView {
   record: { text?: unknown; createdAt?: unknown; [key: string]: unknown };
   indexedAt: string;
   replyCount?: number;
+  likeCount?: number;
+  repostCount?: number;
+  quoteCount?: number;
 }
 
 interface ApiAuthor {
@@ -146,7 +149,7 @@ function commentFromThreadView(view: ApiThreadView & { post: ApiPostView }): Com
   const createdAt =
     typeof post.record.createdAt === 'string' ? post.record.createdAt : post.indexedAt;
 
-  return {
+  const result: Comment = {
     uri: post.uri,
     cid: post.cid,
     text,
@@ -155,6 +158,11 @@ function commentFromThreadView(view: ApiThreadView & { post: ApiPostView }): Com
     author: authorFromApi(post.author),
     replies: collectComments(view.replies),
   };
+  if (typeof post.likeCount === 'number') result.likeCount = post.likeCount;
+  if (typeof post.repostCount === 'number') result.repostCount = post.repostCount;
+  if (typeof post.replyCount === 'number') result.replyCount = post.replyCount;
+  if (typeof post.quoteCount === 'number') result.quoteCount = post.quoteCount;
+  return result;
 }
 
 function authorFromApi(author: ApiAuthor): Author {

@@ -12,6 +12,9 @@ export type { SkeletonStateProps } from './react/SkeletonState';
 export type { CommentListProps } from './react/CommentList';
 export type { CommentItemProps } from './react/CommentItem';
 
+// Icons (re-exported so consumers can swap them via renderComment)
+export { ReplyIcon, HeartIcon, RepostIcon, QuoteIcon } from './react/icons';
+
 // Hooks
 export { useThread } from './react/hooks/useThread';
 export { useCommentCount } from './react/hooks/useCommentCount';

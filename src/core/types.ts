@@ -15,6 +15,10 @@ export interface Comment {
   indexedAt: string;
   author: Author;
   replies: Comment[];
+  likeCount?: number;
+  repostCount?: number;
+  replyCount?: number;
+  quoteCount?: number;
 }
 
 export interface Thread {
@@ -77,6 +81,10 @@ export interface BlueCometCommentsClassNames {
   text?: string;
   replies?: string;
   replyButton?: string;
+  itemFooter?: string;
+  itemReply?: string;
+  itemMetrics?: string;
+  itemMetric?: string;
   empty?: string;
   loading?: string;
   error?: string;
