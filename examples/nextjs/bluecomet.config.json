@@ -1,0 +1,6 @@
+{
+  "files": ["posts/*.mdx", "posts/*.md"],
+  "frontmatterKey": "bluesky",
+  "textTemplate": "{{title}}\n\n{{description}}\n\nhttps://example.com/posts/{{slug}}",
+  "concurrency": 1
+}

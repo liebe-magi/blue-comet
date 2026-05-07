@@ -1,0 +1,28 @@
+---
+title: Hello, Blue Comet
+date: 2026-05-07
+description: A short demo article wired up to Blue Comet's CLI-based comment linker.
+---
+
+This is a sample post demonstrating how Blue Comet integrates into a Next.js
+App Router blog. The page reads MDX from `posts/`, parses frontmatter via
+`gray-matter`, and renders the body with `next-mdx-remote/rsc`.
+
+## How comments work
+
+Below this article you should see one of two things:
+
+1. **A "Comments not yet linked" notice.** This frontmatter has no `bluesky:`
+   key yet. Run `bluecomet link posts/sample.mdx` once you've logged in and
+   the CLI will create a Bluesky post, then write its `at://` URI into this
+   file. The next render will show real comments.
+2. **A live comment thread**, once the URI is in the frontmatter. Comments
+   live on Bluesky; visitors who want to reply click the button at the top
+   of the section, which opens the post on bsky.app.
+
+## Why no in-page login?
+
+Reading the public Bluesky AppView requires no auth, which keeps the React
+bundle small and avoids the OAuth dance. Posting happens on Bluesky itself,
+which means visitors use whatever client they prefer — and your blog never
+holds a token.
