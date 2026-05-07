@@ -68,10 +68,14 @@ ehthumbs.db
 $RECYCLE.BIN/
 Icon?
 
-# Example関連
-example/dist/
-example/.vite/
-example/node_modules/
+# Examples
+examples/*/dist/
+examples/*/.vite/
+examples/*/.next/
+examples/*/node_modules/
+
+# Claude Code per-user settings
+.claude/
 
 # その他
 .tmp/

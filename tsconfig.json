@@ -1,20 +1,21 @@
 {
   "compilerOptions": {
-    "target": "es5",
-    "module": "esnext",
-    "lib": ["dom", "esnext"],
-    "jsx": "react",
-    "declaration": true,
-    "declarationDir": "dist",
-    "sourceMap": true,
-    "outDir": "dist",
+    "target": "ES2020",
+    "lib": ["ES2022", "DOM", "DOM.Iterable"],
+    "module": "ESNext",
+    "moduleResolution": "Bundler",
+    "jsx": "react-jsx",
     "strict": true,
-    "moduleResolution": "node",
-    "allowSyntheticDefaultImports": true,
+    "noUncheckedIndexedAccess": true,
+    "noImplicitOverride": true,
     "esModuleInterop": true,
+    "isolatedModules": true,
+    "resolveJsonModule": true,
     "skipLibCheck": true,
-    "forceConsistentCasingInFileNames": true
+    "verbatimModuleSyntax": true,
+    "noEmit": true,
+    "types": ["node", "@testing-library/jest-dom"]
   },
-  "include": ["src"],
-  "exclude": ["node_modules", "dist", "example", "**/__tests__/**"]
+  "include": ["src", "test", "tsup.config.ts", "vitest.config.ts", "eslint.config.js"],
+  "exclude": ["node_modules", "dist", "examples"]
 }
