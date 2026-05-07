@@ -5,7 +5,9 @@
   "license": "MIT",
   "author": "liebe-magi",
   "type": "module",
-  "sideEffects": ["**/*.css"],
+  "sideEffects": [
+    "**/*.css"
+  ],
   "files": [
     "dist",
     "README.md",
@@ -28,7 +30,7 @@
   "module": "./dist/index.js",
   "types": "./dist/index.d.ts",
   "bin": {
-    "bluecomet": "./dist/cli/bin.js"
+    "bluecomet": "dist/cli/bin.js"
   },
   "engines": {
     "node": ">=18.17"
