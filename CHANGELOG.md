@@ -17,6 +17,7 @@ Full rewrite. **Breaking: nothing in `0.1.x` is preserved** — public API, pack
   - `login` / `logout` — saves a handle + Bluesky app password to `~/.bluecomet/credentials.json` (chmod 600).
   - `post` — atomic primitive; takes `--text` or `--stdin`, prints URI (or `--json`).
   - `link <files...>` — reads MDX/Markdown frontmatter, posts via templated text, writes the resulting URI back into the file. Supports `--dry-run`, `--skip-existing` (default), `--force`, `--frontmatter-key`, `--text-template`, `--concurrency`, `--lang`, and a `bluecomet.config.{json,mjs,js}` for project defaults.
+- Post bodies are sent with **RichText facets** so URLs / @mentions / #hashtags render as clickable spans on Bluesky, and an **OGP embed card** is attached automatically (via `cardyb.bsky.app`) when the body contains a URL — matching the look of the official Bluesky web client.
 - `examples/vite/` — minimal SPA showcasing the simplest integration.
 - `examples/nextjs/` — Next.js 16 App Router + MDX + frontmatter-driven URI + CLI integration.
 
@@ -26,7 +27,7 @@ Full rewrite. **Breaking: nothing in `0.1.x` is preserved** — public API, pack
 - Article ↔ Bluesky-post mapping: `searchPosts` is **gone**. Mapping lives explicitly in frontmatter.
 - Bundler: `tsup` (was `rollup`).
 - Test framework: `vitest` (was `jest`).
-- CLI library: `cac`.
+- CLI library: `commander`.
 - Package manager: `bun`.
 - Peer dependency: React `>=18` (was `>=16.8`); `engines.node >=18.17`.
 
