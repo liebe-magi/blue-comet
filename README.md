@@ -181,6 +181,8 @@ echo "..." | bluecomet post --stdin --json
 # → {"uri":"at://...","cid":"...","webUrl":"https://bsky.app/..."}
 ```
 
+URLs / `@mentions` / `#hashtags` in the text are sent with **RichText facets** so they render as clickable spans on Bluesky. When the text contains a URL, an **OGP embed card** (title / description / thumbnail) is attached automatically via [cardyb.bsky.app](https://cardyb.bsky.app), matching the official Bluesky web client's behavior. If cardyb is unreachable or the og:image exceeds Bluesky's 1 MB blob limit the post still goes through, just without the card / thumbnail.
+
 ### `bluecomet link <files...>`
 
 Frontmatter-aware convenience. For each file:
