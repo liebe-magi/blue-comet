@@ -47,7 +47,7 @@ export default defineConfig([
     sourcemap: true,
     target: 'node18',
     platform: 'node',
-    external: ['@atproto/api', 'gray-matter', 'cac', 'kleur', 'prompts'],
+    external: ['@atproto/api', 'gray-matter', 'commander', 'kleur', 'prompts'],
     define: VERSION_DEFINE,
   },
   {
@@ -58,7 +58,7 @@ export default defineConfig([
     sourcemap: false,
     target: 'node18',
     platform: 'node',
-    external: ['@atproto/api', 'gray-matter', 'cac', 'kleur', 'prompts'],
+    external: ['@atproto/api', 'gray-matter', 'commander', 'kleur', 'prompts'],
     banner: { js: '#!/usr/bin/env node' },
     define: VERSION_DEFINE,
     onSuccess: async () => {
