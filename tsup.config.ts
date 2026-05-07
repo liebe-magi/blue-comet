@@ -1,12 +1,9 @@
 import { defineConfig } from 'tsup';
-import {
-  chmodSync,
-  copyFileSync,
-  existsSync,
-  readFileSync,
-  writeFileSync,
-} from 'node:fs';
+import { chmodSync, copyFileSync, existsSync, readFileSync, writeFileSync } from 'node:fs';
 import { resolve } from 'node:path';
+
+const pkg = JSON.parse(readFileSync(resolve('package.json'), 'utf8')) as { version: string };
+const VERSION_DEFINE = { 'process.env.BLUECOMET_VERSION': JSON.stringify(pkg.version) };
 
 const USE_CLIENT_DIRECTIVE = "'use client';\n";
 
@@ -51,6 +48,7 @@ export default defineConfig([
     target: 'node18',
     platform: 'node',
     external: ['@atproto/api', 'gray-matter', 'cac', 'kleur', 'prompts'],
+    define: VERSION_DEFINE,
   },
   {
     name: 'cli-bin',
@@ -62,6 +60,7 @@ export default defineConfig([
     platform: 'node',
     external: ['@atproto/api', 'gray-matter', 'cac', 'kleur', 'prompts'],
     banner: { js: '#!/usr/bin/env node' },
+    define: VERSION_DEFINE,
     onSuccess: async () => {
       const bin = resolve('dist/cli/bin.js');
       if (existsSync(bin)) {
