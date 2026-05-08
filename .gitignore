@@ -77,6 +77,9 @@ examples/*/node_modules/
 # Claude Code per-user settings
 .claude/
 
+# Husky internal (auto-generated; hook scripts in .husky/* are tracked)
+.husky/_/
+
 # その他
 .tmp/
 temp/
