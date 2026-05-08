@@ -1,0 +1,111 @@
+{
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "extends": [
+    "config:recommended",
+    ":dependencyDashboard",
+    ":semanticCommits",
+    ":semanticCommitTypeAll(chore)",
+    ":prHourlyLimit2",
+    ":prConcurrentLimit10"
+  ],
+  "timezone": "Asia/Tokyo",
+  "schedule": ["before 9am on monday"],
+  "labels": ["dependencies"],
+  "rangeStrategy": "bump",
+  "platformAutomerge": true,
+  "rebaseWhen": "behind-base-branch",
+  "lockFileMaintenance": {
+    "enabled": true,
+    "automerge": true,
+    "schedule": ["before 9am on monday"]
+  },
+  "vulnerabilityAlerts": {
+    "labels": ["security"],
+    "automerge": true,
+    "schedule": ["at any time"]
+  },
+  "packageRules": [
+    {
+      "description": "Auto-merge devDependencies (patch & minor) — non-runtime impact",
+      "matchDepTypes": ["devDependencies"],
+      "matchUpdateTypes": ["patch", "minor", "digest"],
+      "automerge": true
+    },
+    {
+      "description": "Auto-merge runtime dependencies (patch only)",
+      "matchDepTypes": ["dependencies"],
+      "matchUpdateTypes": ["patch"],
+      "automerge": true
+    },
+    {
+      "description": "Group typescript-eslint",
+      "matchPackageNames": ["@typescript-eslint/{/,}**", "typescript-eslint"],
+      "groupName": "typescript-eslint"
+    },
+    {
+      "description": "Group ESLint and plugins",
+      "matchPackageNames": [
+        "eslint",
+        "@eslint/{/,}**",
+        "eslint-{config,plugin}-{/,}**"
+      ],
+      "groupName": "eslint"
+    },
+    {
+      "description": "Group Prettier",
+      "matchPackageNames": ["prettier", "eslint-config-prettier"],
+      "groupName": "prettier"
+    },
+    {
+      "description": "Group React",
+      "matchPackageNames": [
+        "react",
+        "react-dom",
+        "@types/react",
+        "@types/react-dom"
+      ],
+      "groupName": "react"
+    },
+    {
+      "description": "Group testing stack",
+      "matchPackageNames": [
+        "vitest",
+        "@vitest/{/,}**",
+        "@testing-library/{/,}**",
+        "msw",
+        "jsdom"
+      ],
+      "groupName": "testing"
+    },
+    {
+      "description": "Group tsup + types/node",
+      "matchPackageNames": ["tsup", "@types/node"],
+      "groupName": "build-toolchain"
+    },
+    {
+      "description": "Major updates: never auto-merge, always review",
+      "matchUpdateTypes": ["major"],
+      "automerge": false,
+      "labels": ["dependencies", "major-update"],
+      "minimumReleaseAge": "3 days"
+    },
+    {
+      "description": "Core runtime dep — keep manual oversight",
+      "matchPackageNames": ["@atproto/api"],
+      "automerge": false,
+      "labels": ["dependencies", "atproto"]
+    },
+    {
+      "description": "Pin GitHub Actions to commit SHAs and group together",
+      "matchManagers": ["github-actions"],
+      "pinDigests": true,
+      "groupName": "github-actions",
+      "automerge": true
+    },
+    {
+      "description": "Wait for releases to settle (avoid bad releases)",
+      "matchUpdateTypes": ["minor", "patch"],
+      "minimumReleaseAge": "1 day"
+    }
+  ]
+}
