@@ -67,8 +67,8 @@
     "prepublishOnly": "bun run lint && bun run typecheck && bun run test && bun run build"
   },
   "peerDependencies": {
-    "react": ">=18",
-    "react-dom": ">=18"
+    "react": ">=18.3.1",
+    "react-dom": ">=18.3.1"
   },
   "peerDependenciesMeta": {
     "react-dom": {
@@ -88,8 +88,8 @@
     "@testing-library/react": "^16.3.2",
     "@types/node": "^22.20.1",
     "@types/prompts": "^2.4.9",
-    "@types/react": "^19.2.7",
-    "@types/react-dom": "^19.2.3",
+    "@types/react": "^19.2.18",
+    "@types/react-dom": "^19.2.4",
     "eslint": "^9.39.5",
     "eslint-config-prettier": "^10.1.8",
     "eslint-plugin-react": "^7.37.5",
@@ -99,8 +99,8 @@
     "jsdom": "^25.0.1",
     "msw": "^2.15.0",
     "prettier": "^3.9.6",
-    "react": "^19.2.3",
-    "react-dom": "^19.2.3",
+    "react": "^19.2.8",
+    "react-dom": "^19.2.8",
     "tsup": "^8.5.1",
     "typescript": "^5.9.3",
     "typescript-eslint": "^8.65.0",
