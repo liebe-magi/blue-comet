@@ -33,7 +33,7 @@
     "bluecomet": "dist/cli/bin.js"
   },
   "engines": {
-    "node": ">=18.17"
+    "node": ">=24.19.0"
   },
   "repository": {
     "type": "git",
